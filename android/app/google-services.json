@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "821576201055",
+    "project_id": "talkwhiz-d8f03",
+    "storage_bucket": "talkwhiz-d8f03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821576201055:android:518fc93aa35665677efcea",
+        "android_client_info": {
+          "package_name": "com.talkwhiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh7baWFSq9_9KYwTLpKQMR_9v8O-l2yj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
