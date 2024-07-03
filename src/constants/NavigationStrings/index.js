@@ -5,4 +5,5 @@ export default {
     LOGIN: 'Login',
     SIGNUP: 'SignUp',
     DASHBOARD: 'Dashboard',
+    PROFILE: 'Profile',
 }

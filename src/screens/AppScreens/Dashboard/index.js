@@ -1,6 +1,5 @@
 import { FlatList, Text, View, SafeAreaView, Dimensions } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { styles } from './styles';
 import firestore from '@react-native-firebase/firestore';
 import { moderateScale } from 'react-native-size-matters';
 import { getItem } from '../../../AsyncStorage';
@@ -14,10 +13,10 @@ const Dashboard = () => {
 
     const getUsers = async () => {
         const iteratedData = []
-        const email = await getItem('EMAIL');
+        const userId = await getItem('USERID');
         firestore()
             .collection('users')
-            .where('email', '!=', email)
+            .where('userId', '!=', userId)
             .get()
             .then(res => {
                 if (res.docs != []) {

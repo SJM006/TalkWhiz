@@ -30,8 +30,7 @@ const LoginScreen = ({ navigation }) => {
                 if (res.docs !== null) {
                     //console.log(res.docs[0].data());
                     goToNext(
-                        res.docs[0].data().name,
-                        res.docs[0].data().email,
+
                         res.docs[0].data().userId,
                     );
                 } else {
@@ -44,9 +43,7 @@ const LoginScreen = ({ navigation }) => {
                 Alert.alert('User Not Found!');
             });
     };
-    const goToNext = async (name, email, userId) => {
-        await setItem('NAME', name);
-        await setItem('EMAIL', email);
+    const goToNext = async (userId) => {
         await setItem('USERID', userId);
         navigation.replace(NavigationStrings.APPSTACK);
     };
