@@ -1,5 +1,11 @@
-import { Dashboard } from "./AppScreens"
+import { Dashboard, PersonalDetails, Profile } from "./AppScreens"
 import { Login, SignUp } from "./AuthScreens"
 
 
-export { Login, SignUp, Dashboard }
+export {
+    Login,
+    SignUp,
+    Dashboard,
+    PersonalDetails,
+    Profile
+}

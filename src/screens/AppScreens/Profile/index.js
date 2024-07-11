@@ -1,11 +1,18 @@
 import { Image, Text, View, SafeAreaView, Dimensions } from 'react-native'
 import React from 'react'
 import imagePaths from '../../../constants/imagePaths'
+import { ProfileNavs } from '../../../components'
+import NavigationStrings from '../../../constants/NavigationStrings'
+import { removeItem } from '../../../AsyncStorage'
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-            <View style={{
+        <View style={{
+            flex: 1, alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#FFFFFF'
+        }}>
+            < View style={{
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -13,10 +20,6 @@ const Profile = () => {
                 width: Dimensions.get('window').width - 5,
                 borderBottomLeftRadius: 30,
                 borderBottomRightRadius: 30,
-                shadowColor: "#000",
-                shadowOpacity: .1,
-                shadowRadius: 15,
-                elevation: 24,
 
             }}>
 
@@ -28,12 +31,22 @@ const Profile = () => {
                     borderRadius: 152 / 2,
                 }} />
 
-            </View>
+            </View >
             <View style={{
                 flex: 2,
                 width: Dimensions.get('window').width,
-
+                paddingTop: 50,
+                paddingLeft: 50,
+                gap: 20
             }}>
+                <ProfileNavs
+                    iconName={'pencil'}
+                    text={'Personal Details'}
+                    onPress={() => { navigation.navigate(NavigationStrings.PERSONALDEAILS) }} />
+                <ProfileNavs
+                    iconName={'account'}
+                    text={'Account'}
+                    onPress={() => { removeItem('ISLOGIN'); navigation.replace(NavigationStrings.AUTHSTACK) }} />
             </View>
         </View >
     )

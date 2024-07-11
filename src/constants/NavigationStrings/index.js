@@ -6,4 +6,5 @@ export default {
     SIGNUP: 'SignUp',
     DASHBOARD: 'Dashboard',
     PROFILE: 'Profile',
+    PERSONALDEAILS: 'PersonalDetails',
 }

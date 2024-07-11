@@ -4,6 +4,7 @@ import NavigationStrings from '../constants/NavigationStrings';
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
 import { useEffect, useState } from 'react';
+import { getItem, removeItem } from '../AsyncStorage';
 
 
 
@@ -11,32 +12,26 @@ import { useEffect, useState } from 'react';
 const Stack = createStackNavigator();
 
 const MainNavigation = () => {
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(null);
 
     useEffect(() => {
-        checkLogin
+        checkLogin()
     }, [])
 
     const checkLogin = async () => {
-
-        const userId = await getItem('USERID');
-        if (userId) {
-            setIsLogin(true)
-        }
-        else {
-            setIsLogin(false)
-        }
+        const isLogin = await getItem('ISLOGIN')
+        setIsLogin(isLogin)
     }
     return (
         <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {isLogin ?
-                    <Stack.Screen name={NavigationStrings.AUTHSTACK} component={AuthStack} /> :
-                    <Stack.Screen name={NavigationStrings.APPSTACK} component={AppStack} />
-                }
+            <Stack.Navigator
+                screenOptions={{ headerShown: false }}>
+                {/* {isLogin === null ? */}
+                <Stack.Screen name={NavigationStrings.AUTHSTACK} component={AuthStack} />
+                <Stack.Screen name={NavigationStrings.APPSTACK} component={AppStack} />
+                {/* } */}
             </Stack.Navigator>
         </NavigationContainer >
-
     );
 }
 

@@ -39,30 +39,20 @@ const SignUp = ({ navigation }) => {
             .get()
             .then(res => {
 
+                // console.log(res.docs[0].data());
+                setItem('USERID', res.docs[0].data().userId);
+                setItem('ISLOGIN', true);
+                navigation.navigate(NavigationStrings.APPSTACK);
 
-                console.log(res.docs[0].data());
-                goToNext(
-                    res.docs[0].data().name,
-                    res.docs[0].data().email,
-                    res.docs[0].data().userId,
-                );
-
-                setName('');
-                setEmail('');
-                setPassword('');
-                setConfirmPass('');
-
+                // setName('');
+                // setEmail('');
+                // setPassword('');
+                // setConfirmPass('');
             })
 
 
     };
 
-    const goToNext = async (name, email, userId) => {
-        await setItem('NAME', name);
-        await setItem('EMAIL', email);
-        await setItem('USERID', userId);
-        navigation.replace(NavigationStrings.APPSTACK);
-    };
     return (
         <KeyboardAvoidingView style={{ flex: 1 }}>
             <View style={{ flex: 1, backgroundColor: 'white' }}>
