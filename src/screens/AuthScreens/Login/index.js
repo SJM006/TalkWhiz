@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TextInput, View, KeyboardAvoidingView } from 'react-native'
+import { Alert, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
@@ -6,7 +6,6 @@ import firestore from '@react-native-firebase/firestore';
 import NavigationStrings from '../../../constants/NavigationStrings'
 import { Loader } from '../../../components'
 import { setItem } from '../../../AsyncStorage'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
