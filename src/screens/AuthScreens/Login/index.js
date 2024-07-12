@@ -12,6 +12,7 @@ const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loaderVisible, setLoaderVisible] = useState(false);
+    const [showLogo, setShowLogo] = useState(true);
 
     const loginUser = () => {
         setLoaderVisible(true);
@@ -43,10 +44,11 @@ const LoginScreen = ({ navigation }) => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.main} >
             <View style={styles.headerContainer}>
-                <Image
+                {showLogo && <Image
                     source={imagePaths.WHITE_APP_LOGO}
                     resizeMode='contain'
-                    style={styles.image} />
+                    style={styles.image} />}
+
             </View>
             <View >
                 <View >
@@ -64,6 +66,8 @@ const LoginScreen = ({ navigation }) => {
                                     autoComplete={'false'}
                                     autoFocus={false}
                                     autoCorrect={false}
+                                    onFocus={() => { setShowLogo(false) }}
+                                    onBlur={() => { setShowLogo(true) }}
                                 />
                             </View>
 
@@ -80,6 +84,8 @@ const LoginScreen = ({ navigation }) => {
                                         autoComplete={'none'}
                                         autoFocus={false}
                                         autoCorrect={false}
+                                        onFocus={() => { setShowLogo(false) }}
+                                        onBlur={() => { setShowLogo(true) }}
                                     />
                                 </View>
                                 <Text style={styles.forgotPassword}>Forgot Password?</Text>
@@ -119,7 +125,7 @@ export default LoginScreen
 
 const styles = StyleSheet.create({
     main: {
-        flex: 1,
+        flex: scale(1),
         backgroundColor: '#FFFFFF'
     },
     headerContainer: {
@@ -151,8 +157,8 @@ const styles = StyleSheet.create({
     },
 
     inputMain: {
-        marginTop: verticalScale(45),
-        gap: verticalScale(30),
+        marginTop: verticalScale(50),
+        gap: verticalScale(40),
         width: scale(280),
     },
 
@@ -177,6 +183,12 @@ const styles = StyleSheet.create({
         fontWeight: '800',
         fontStyle: 'italic',
     },
+    buttonsView: {
+        marginBottom: verticalScale(50),
+        marginTop: verticalScale(50),
+        gap: verticalScale(8)
+
+    },
     loginView: {
         backgroundColor: '#ED820B',
         paddingHorizontal: scale(65),
@@ -189,12 +201,7 @@ const styles = StyleSheet.create({
         fontSize: scale(20),
         fontWeight: '700',
     },
-    buttonsView: {
-        marginBottom: verticalScale(45),
-        marginTop: verticalScale(45),
-        gap: verticalScale(8)
 
-    },
     registerView: {
         flexDirection: 'row',
         gap: scale(5),
