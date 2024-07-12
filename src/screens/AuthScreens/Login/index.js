@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
+import { Alert, StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
@@ -6,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import NavigationStrings from '../../../constants/NavigationStrings'
 import { Loader } from '../../../components'
 import { setItem } from '../../../AsyncStorage'
+import imagePaths from '../../../constants/imagePaths';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -38,96 +39,111 @@ const LoginScreen = ({ navigation }) => {
         navigation.replace(NavigationStrings.APPSTACK);
     };
     return (
-        <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-
-
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={styles.main} >
             <View style={styles.headerContainer}>
+                <Image
+                    source={imagePaths.WHITE_APP_LOGO}
+                    resizeMode='contain'
+                    style={styles.image} />
             </View>
-            <KeyboardAvoidingView >
-                <View style={styles.Container}>
-                    <View style={styles.inputMain}>
-                        <View style={styles.inputView}>
-                            <Ionicons name={'mail-outline'} size={scale(30)} color={'#AAAAAA'} />
-                            <TextInput
-                                placeholder={'Enter your Email'}
-                                style={styles.input}
-                                placeholderTextColor={'#999999'}
-                                value={email}
-                                onChangeText={text => setEmail(text)}
-                                autoCapitalize={false}
-                                autoComplete={'false'}
-                                autoFocus={false}
-                                autoCorrect={false}
-                            />
-                        </View>
-
-                        <View>
+            <View >
+                <View >
+                    <View style={styles.Container}>
+                        <View style={styles.inputMain}>
                             <View style={styles.inputView}>
-                                <Ionicons name={'key-outline'} size={scale(30)} color={'#AAAAAA'} />
+                                <Ionicons name={'mail-outline'} size={scale(30)} color={'#AAAAAA'} />
                                 <TextInput
-                                    placeholder={'Enter your Password'}
+                                    placeholder={'Enter your Email'}
                                     style={styles.input}
                                     placeholderTextColor={'#999999'}
-                                    value={password}
-                                    onChangeText={text => setPassword(text)}
+                                    value={email}
+                                    onChangeText={text => setEmail(text)}
                                     autoCapitalize={false}
-                                    autoComplete={'none'}
+                                    autoComplete={'false'}
                                     autoFocus={false}
                                     autoCorrect={false}
                                 />
                             </View>
-                            <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                        </View>
-                    </View>
-                    <View style={styles.buttonsView}>
-                        <TouchableOpacity
-                            activeOpacity={.9}
-                            style={styles.loginView}
-                            onPress={loginUser}
-                        >
-                            <Text style={styles.loginText}>Login</Text>
-                        </TouchableOpacity>
 
-                        <View style={styles.registerView}>
-                            <Text style={styles.registerText}>Don't have an account?</Text>
+                            <View>
+                                <View style={styles.inputView}>
+                                    <Ionicons name={'key-outline'} size={scale(30)} color={'#AAAAAA'} />
+                                    <TextInput
+                                        placeholder={'Enter your Password'}
+                                        style={styles.input}
+                                        placeholderTextColor={'#999999'}
+                                        value={password}
+                                        onChangeText={text => setPassword(text)}
+                                        autoCapitalize={false}
+                                        autoComplete={'none'}
+                                        autoFocus={false}
+                                        autoCorrect={false}
+                                    />
+                                </View>
+                                <Text style={styles.forgotPassword}>Forgot Password?</Text>
+                            </View>
+                        </View>
+                        <View style={styles.buttonsView}>
                             <TouchableOpacity
                                 activeOpacity={.9}
-                                onPress={() => {
-                                    navigation.navigate(NavigationStrings.SIGNUP)
-                                }}>
-
-                                <Text style={styles.registerNavButton}>REGISTER</Text>
+                                style={styles.loginView}
+                                onPress={loginUser}
+                            >
+                                <Text style={styles.loginText}>Login</Text>
                             </TouchableOpacity>
+
+                            <View style={styles.registerView}>
+                                <Text style={styles.registerText}>Don't have an account?</Text>
+                                <TouchableOpacity
+                                    activeOpacity={.9}
+                                    onPress={() => {
+                                        navigation.navigate(NavigationStrings.SIGNUP)
+                                    }}>
+
+                                    <Text style={styles.registerNavButton}>REGISTER</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                </View>
-                <Loader visible={loaderVisible} />
+                    <Loader visible={loaderVisible} />
 
-            </KeyboardAvoidingView >
-        </View>
+                </View >
+            </View>
+        </KeyboardAvoidingView >
     )
 }
 
 export default LoginScreen
 
 const styles = StyleSheet.create({
+    main: {
+        flex: 1,
+        backgroundColor: '#FFFFFF'
+    },
     headerContainer: {
-        flex: scale(1),
+        flex: scale(2),
         backgroundColor: '#ED820B',
         borderBottomLeftRadius: scale(24),
         borderBottomRightRadius: scale(24),
+        alignItems: 'center',
+        justifyContent: 'center'
     },
-
+    image: {
+        height: verticalScale(150),
+        width: scale(150),
+    },
     Container: {
+        bottom: scale(50),
         backgroundColor: '#FFFFFF',
-        marginHorizontal: scale(20),
+        marginHorizontal: scale(15),
         borderRadius: scale(30),
-        bottom: scale(60),
         alignItems: 'center',
         shadowColor: "#000",
         shadowOffset: {
             width: scale(4),
-            height: verticalScale(5),
+            height: verticalScale(3),
         },
         shadowOpacity: scale(0.30),
         shadowRadius: scale(4.30),
@@ -135,16 +151,16 @@ const styles = StyleSheet.create({
     },
 
     inputMain: {
-        marginTop: verticalScale(70),
+        marginTop: verticalScale(45),
+        gap: verticalScale(30),
         width: scale(280),
-        gap: verticalScale(30)
     },
 
     inputView: {
         flexDirection: 'row',
         gap: scale(20),
         paddingLeft: scale(30),
-        paddingVertical: verticalScale(10),
+        paddingVertical: verticalScale(6),
         backgroundColor: '#EEEEEE',
         fontSize: scale(19),
         borderRadius: scale(150)
@@ -156,7 +172,7 @@ const styles = StyleSheet.create({
     },
     forgotPassword: {
         marginLeft: scale(30),
-        marginTop: verticalScale(10),
+        marginTop: verticalScale(8),
         color: '#999999',
         fontWeight: '800',
         fontStyle: 'italic',
@@ -174,9 +190,9 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     buttonsView: {
-        marginBottom: verticalScale(50),
-        marginTop: verticalScale(50),
-        gap: verticalScale(10)
+        marginBottom: verticalScale(45),
+        marginTop: verticalScale(45),
+        gap: verticalScale(8)
 
     },
     registerView: {
