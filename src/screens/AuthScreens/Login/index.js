@@ -1,19 +1,11 @@
-import {
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
-    KeyboardAvoidingView,
-    TouchableOpacity,
-    Image,
-} from 'react-native';
-import React, { useState } from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, TouchableOpacity, Image } from 'react-native'
+import React, { useState } from 'react'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters'
 import firestore from '@react-native-firebase/firestore';
-import NavigationStrings from '../../../constants/NavigationStrings';
-import { Loader } from '../../../components';
-import { setItem } from '../../../AsyncStorage';
+import NavigationStrings from '../../../constants/NavigationStrings'
+import { Loader } from '../../../components'
+import { setItem } from '../../../AsyncStorage'
 import imagePaths from '../../../constants/imagePaths';
 
 const LoginScreen = ({ navigation }) => {
@@ -22,6 +14,8 @@ const LoginScreen = ({ navigation }) => {
     const [loaderVisible, setLoaderVisible] = useState(false);
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [secureText, setSecureText] = useState(true);
+
 
     const userDetailCheck = () => {
         setLoaderVisible(true);
@@ -30,13 +24,14 @@ const LoginScreen = ({ navigation }) => {
             .where('email', '==', email)
             .get()
             .then(res => {
+                const data = res.docs[0].data()
                 setLoaderVisible(false);
                 if (res.docs !== null) {
                     //console.log(res.docs[0].data());
-                    if (password !== res.docs[0].data().password) {
+                    if (password !== data.password) {
                         setPasswordError('Incorrect Password');
                     } else {
-                        goToNext(res.docs[0].data().userId);
+                        goToNext(data.userId);
                         setLoaderVisible(false);
                     }
                 } else {
@@ -79,33 +74,28 @@ const LoginScreen = ({ navigation }) => {
             userDetailCheck();
         }
     }
-
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={styles.main}>
+            style={styles.main} >
 
             <View style={styles.headerContainer}>
                 <Image
                     source={imagePaths.WHITE_APP_LOGO}
-                    resizeMode="center"
-                    style={styles.image}
-                />
+                    resizeMode='center'
+                    style={styles.image} />
             </View>
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
-                style={{ flex: 3 }}>
-                <View>
+                style={{ flex: 3 }} >
+                <View >
+
                     <View style={styles.Container}>
                         <View style={styles.inputMain}>
                             <View>
                                 <View style={styles.inputView}>
-                                    <Ionicons
-                                        name={'mail-outline'}
-                                        size={scale(30)}
-                                        color={'#AAAAAA'}
-                                    />
+                                    <Ionicons name={'mail-outline'} size={scale(30)} color={'#AAAAAA'} />
                                     <TextInput
                                         placeholder={'Enter your Email'}
                                         style={styles.input}
@@ -118,19 +108,15 @@ const LoginScreen = ({ navigation }) => {
                                         autoCorrect={false}
                                     />
                                 </View>
-                                <Text style={styles.errText}>{emailError ? emailError : null}</Text>
+                                {emailError ? <Text style={styles.errText}>{emailError}</Text> : null}
                             </View>
 
                             <View>
                                 <View style={styles.inputView}>
-                                    <Ionicons
-                                        name={'key-outline'}
-                                        size={scale(30)}
-                                        color={'#AAAAAA'}
-                                    />
+                                    <Ionicons name={'key-outline'} size={scale(28)} color={'#AAAAAA'} />
                                     <TextInput
                                         placeholder={'Enter your Password'}
-                                        style={styles.input}
+                                        style={[styles.input, { width: scale(160) }]}
                                         placeholderTextColor={'#999999'}
                                         value={password}
                                         onChangeText={text => setPassword(text)}
@@ -138,53 +124,59 @@ const LoginScreen = ({ navigation }) => {
                                         autoComplete={'none'}
                                         autoFocus={false}
                                         autoCorrect={false}
+                                        secureTextEntry={secureText}
                                     />
+                                    <TouchableOpacity activeOpacity={.9} onPress={() => { setSecureText(!secureText) }}>
+                                        <Ionicons
+                                            name={secureText ? 'eye-off-outline' : 'eye-outline'}
+                                            size={scale(20)}
+                                            color={'#AAAAAA'}
+                                            style={{ marginLeft: scale(25) }} />
+                                    </TouchableOpacity>
+
                                 </View>
-                                <Text style={styles.errText}>{passwordError ? passwordError : null}</Text>
-                                <View
-                                    style={{
-                                        marginLeft: scale(30),
-                                        marginTop: verticalScale(8),
-                                    }}>
-                                    <Text style={styles.forgotPassword}>Forgot Password?</Text>
-                                </View>
+                                {passwordError ? <Text style={styles.errText}>{passwordError}</Text> : null}
+                                {/* <Text style={styles.forgotPassword}>Forgot Password?</Text> */}
                             </View>
                         </View>
 
                         <View style={styles.buttonsView}>
                             <TouchableOpacity
-                                activeOpacity={0.9}
+                                activeOpacity={.9}
                                 style={styles.loginView}
-                                onPress={loginProcess}>
+                                onPress={loginProcess}
+                            >
                                 <Text style={styles.loginText}>Login</Text>
                             </TouchableOpacity>
 
                             <View style={styles.registerView}>
                                 <Text style={styles.registerText}>Don't have an account?</Text>
                                 <TouchableOpacity
-                                    activeOpacity={0.9}
+                                    activeOpacity={.9}
                                     onPress={() => {
-                                        navigation.navigate(NavigationStrings.SIGNUP);
+                                        navigation.navigate(NavigationStrings.SIGNUP)
                                     }}>
+
                                     <Text style={styles.registerNavButton}>REGISTER</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </View>
                     <Loader visible={loaderVisible} />
-                </View>
+
+                </View >
             </KeyboardAvoidingView>
 
-        </KeyboardAvoidingView>
-    );
-};
+        </KeyboardAvoidingView >
+    )
+}
 
-export default LoginScreen;
+export default LoginScreen
 
 const styles = StyleSheet.create({
     main: {
         flex: scale(1),
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FFFFFF'
     },
     headerContainer: {
         flex: scale(2),
@@ -192,49 +184,52 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: scale(24),
         borderBottomRightRadius: scale(24),
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     image: {
         height: verticalScale(150),
         width: scale(150),
     },
     Container: {
-        bottom: verticalScale(50),
+        bottom: scale(50),
         backgroundColor: '#FFFFFF',
         marginHorizontal: scale(15),
         borderRadius: scale(30),
         alignItems: 'center',
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: {
             width: scale(4),
             height: verticalScale(3),
         },
-        shadowOpacity: scale(0.3),
-        shadowRadius: scale(4.3),
+        shadowOpacity: scale(0.30),
+        shadowRadius: scale(4.30),
         elevation: scale(13),
     },
 
     inputMain: {
         marginTop: verticalScale(50),
         gap: verticalScale(40),
-        width: scale(280),
+        width: scale(295),
     },
 
     inputView: {
         flexDirection: 'row',
-        gap: scale(20),
-        paddingLeft: scale(30),
+        paddingLeft: scale(25),
         paddingVertical: verticalScale(6),
         backgroundColor: '#EEEEEE',
         fontSize: scale(19),
         borderRadius: scale(150),
+        alignItems: 'center'
     },
     input: {
         padding: moderateScale(0),
         width: scale(250),
         color: '#000000',
+        marginLeft: scale(15)
     },
     forgotPassword: {
+        marginLeft: scale(30),
+        marginTop: verticalScale(8),
         color: '#999999',
         fontWeight: '800',
         fontStyle: 'italic',
@@ -242,7 +237,8 @@ const styles = StyleSheet.create({
     buttonsView: {
         marginBottom: verticalScale(50),
         marginTop: verticalScale(50),
-        gap: verticalScale(8),
+        gap: verticalScale(8)
+
     },
     loginView: {
         backgroundColor: '#ED820B',
@@ -262,17 +258,17 @@ const styles = StyleSheet.create({
         gap: scale(5),
     },
     registerText: {
-        fontWeight: '500',
+        fontWeight: '500'
     },
     registerNavButton: {
         color: '#0000FFAA',
-        fontWeight: '600',
+        fontWeight: '600'
     },
     errText: {
         color: '#FF0000',
-        fontSize: scale(12),
+        fontSize: scale(11),
         fontWeight: '500',
-        marginTop: verticalScale(5),
-        marginLeft: scale(15)
+        marginLeft: scale(15),
+        marginTop: scale(8)
     }
-});
+})
